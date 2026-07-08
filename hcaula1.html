@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Talk Agribusiness · Aula 1 — Slaughter, Defects &amp; Losses</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --green:#1b4934; --amber:#b85c00; --navy:#1a2a5c; --teal:#1a4a4a;
+    --green-soft:#e9f1ec; --amber-soft:#fbf0e3; --navy-soft:#e9ecf6; --teal-soft:#e6efef;
+    --ink:#222; --gray-600:#5a5f66; --gray-400:#9aa0a6; --line:#e5e7eb;
+    --bg:#faf8f4; --white:#fff; --ok:#1a7f37; --err:#c0392b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  .mono{font-family:'JetBrains Mono',monospace}
+
+  header{position:sticky;top:0;z-index:50;background:var(--green);color:#fff;padding:10px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;box-shadow:0 2px 12px rgba(0,0,0,.14)}
+  .header-logo{height:42px;width:auto;display:block}
+  .week-badge{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.30);padding:6px 12px;border-radius:999px;font-size:.78rem;font-weight:700;white-space:nowrap}
+
+  main{max-width:900px;margin:0 auto;padding:20px 16px 90px}
+  .lesson-title{font-family:'DM Serif Display',serif;font-size:1.9rem;line-height:1.15;color:var(--green);margin:6px 0 4px}
+  .lesson-sub{color:var(--gray-600);font-size:.95rem;margin-bottom:8px}
+  .lesson-sub .mono{color:var(--amber);font-weight:700}
+  .lesson-intro{font-size:.9rem;color:var(--gray-600);margin-bottom:16px}
+  .lesson-intro b.g{color:var(--green)} .lesson-intro b.n{color:var(--navy)}
+
+  /* TOOLBAR */
+  .toolbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:var(--white);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:22px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+  .toolbar .save-note{font-size:.8rem;color:var(--gray-600);flex:1;min-width:150px}
+  .toolbar .save-note b{color:var(--green)}
+  .tbtn{font-family:inherit;font-size:.82rem;font-weight:700;border:1px solid var(--line);background:#fff;color:var(--ink);padding:9px 13px;border-radius:9px;cursor:pointer;min-height:40px;display:inline-flex;align-items:center;gap:5px}
+  .tbtn:hover{border-color:var(--green)}
+  .tbtn.danger:hover{border-color:var(--err);color:var(--err)}
+  #saveDot{position:fixed;bottom:16px;right:16px;background:var(--green);color:#fff;font-size:.8rem;font-weight:700;padding:8px 14px;border-radius:999px;opacity:0;transition:opacity .25s;z-index:99;box-shadow:0 3px 12px rgba(0,0,0,.2)}
+  #saveDot.on{opacity:1}
+
+  .card{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:20px;margin-bottom:22px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+  .card-green{border-top:4px solid var(--green)}
+  .card-amber{border-top:4px solid var(--amber)}
+  .card-navy{border-top:4px solid var(--navy)}
+  .card-teal{border-top:4px solid var(--teal)}
+  .card-title{font-family:'DM Serif Display',serif;font-size:1.25rem;margin-bottom:6px;display:flex;align-items:center;gap:9px}
+  .card-green .card-title{color:var(--green)} .card-amber .card-title{color:var(--amber)}
+  .card-navy .card-title{color:var(--navy)} .card-teal .card-title{color:var(--teal)}
+  .card-note{font-size:.82rem;color:var(--gray-600);margin-bottom:14px}
+  .sub-h{font-size:1.02rem;font-weight:700;margin:20px 0 4px;display:flex;align-items:center;gap:8px}
+
+  /* ZONE BANNERS */
+  .zone{border-radius:12px;padding:12px 18px;margin:6px 0 20px;color:#fff;font-family:'DM Serif Display',serif;font-size:1.15rem;display:flex;align-items:center;gap:10px}
+  .zone small{font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:400;opacity:.92}
+  .zone-class{background:var(--green)}
+  .zone-home{background:var(--navy)}
+
+  .outcomes{list-style:none}
+  .outcomes li{position:relative;padding:7px 0 7px 30px;font-size:.98rem}
+  .outcomes li::before{content:'\2713';position:absolute;left:0;top:6px;width:20px;height:20px;background:var(--green);color:#fff;border-radius:50%;font-size:.7rem;display:flex;align-items:center;justify-content:center;font-weight:700}
+
+  /* FLASHCARD */
+  .fc-wrapper{--fc:var(--green);--fc-soft:var(--green-soft)}
+  .voice-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:14px;font-size:.78rem;color:var(--gray-600)}
+  .voice-row select{font-family:inherit;font-size:.78rem;padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);max-width:230px}
+  .fc-card{position:relative;background:#fff;border:1px solid var(--line);border-radius:16px;min-height:288px;padding:22px;cursor:pointer;transition:box-shadow .2s;box-shadow:0 2px 10px rgba(0,0,0,.05)}
+  .fc-card:hover{box-shadow:0 6px 20px rgba(0,0,0,.09)}
+  .fc-face{display:none} .fc-face.on{display:block}
+  .fc-flip-hint{position:absolute;top:12px;right:14px;font-size:.66rem;color:var(--gray-400);text-transform:uppercase;letter-spacing:.5px}
+  .fc-step-label{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--fc);font-weight:700;letter-spacing:1px}
+  .fc-word{font-family:'DM Serif Display',serif;font-size:2.1rem;line-height:1.1;color:var(--ink);margin:14px 0 4px}
+  .fc-ipa{font-style:italic;color:var(--gray-600);font-size:1rem;margin-bottom:18px}
+  .fc-translation{font-family:'DM Serif Display',serif;font-size:1.55rem;color:var(--fc);margin:8px 0 16px}
+  .fc-example{font-family:'JetBrains Mono',monospace;font-size:.95rem;background:var(--fc-soft);border-left:4px solid var(--fc);padding:12px 14px;border-radius:0 8px 8px 0;margin:6px 0}
+  .fc-example-pt{font-style:italic;color:var(--gray-600);font-size:.9rem;margin:8px 0 16px}
+  .fc-why{display:inline-block;background:var(--fc-soft);color:var(--fc);font-size:.82rem;padding:9px 13px;border-radius:10px;line-height:1.4}
+  .fc-why b{font-weight:700}
+  .audio-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:6px 0 4px}
+  .btn-audio{font-family:inherit;font-size:.82rem;font-weight:700;background:var(--fc);color:#fff;border:none;padding:9px 15px;border-radius:10px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;min-height:40px}
+  .btn-audio.playing{opacity:.6}
+  .btn-spd{font-family:'JetBrains Mono',monospace;font-size:.74rem;background:#fff;border:1px solid var(--fc);color:var(--fc);padding:8px 11px;border-radius:8px;cursor:pointer;min-height:40px;min-width:44px}
+  .btn-spd.active{background:var(--fc);color:#fff}
+  .fc-tap{font-size:.76rem;color:var(--gray-400);margin-top:16px;text-align:center}
+  .fc-nav{display:flex;align-items:center;justify-content:space-between;margin-top:14px;gap:12px}
+  .fc-arrow{font-family:inherit;font-size:1rem;font-weight:700;background:#fff;border:1px solid var(--fc);color:var(--fc);width:46px;height:46px;border-radius:12px;cursor:pointer}
+  .fc-arrow:active{background:var(--fc);color:#fff}
+  .fc-counter{font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--gray-600);font-weight:700}
+  .fc-dots{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:12px}
+  .fc-dot{width:11px;height:11px;border-radius:50%;background:#fff;border:1.5px solid var(--fc);cursor:pointer;transition:transform .15s,opacity .15s}
+  .fc-dot.active{background:var(--fc);transform:scale(1.35)}
+  .fc-dot.visited{opacity:.4}
+
+  /* VOCAB PRACTICE */
+  .sayit{list-style:none;display:grid;grid-template-columns:1fr;gap:2px}
+  .sayit li{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--line);font-size:.94rem}
+  .sayit input{width:20px;height:20px;accent-color:var(--green);flex-shrink:0}
+  .sayit .mono{font-weight:700;color:var(--green)}
+  .sort-row{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--line);flex-wrap:wrap}
+  .sort-row .mono{flex:1;min-width:130px;font-weight:700}
+  .sort-row select{font-family:inherit;font-size:.9rem;padding:8px 10px;border:1.5px solid var(--line);border-radius:8px;min-height:42px;min-width:170px}
+  .sort-row select.correct{border-color:var(--ok);background:#eafaf0}
+  .sort-row select.wrong{border-color:var(--err);background:#fdeceb}
+  .yourword{margin:10px 0}
+  .yourword label{font-size:.9rem;font-weight:500;display:block;margin-bottom:4px}
+  .yourword label .mono{color:var(--green);font-weight:700}
+  .yourword input{width:100%}
+
+  input[type=text],textarea,.ex-input{font-family:inherit;font-size:.95rem;padding:10px 12px;border:1.5px solid var(--line);border-radius:9px;width:100%;min-height:44px;background:#fff;color:var(--ink)}
+  textarea{min-height:70px;line-height:1.5;resize:vertical}
+  input[type=text]:focus,textarea:focus,.ex-input:focus{outline:none;border-color:var(--green)}
+
+  /* FRAMES LADDER */
+  .frame-block{background:var(--amber-soft);border-left:4px solid var(--amber);border-radius:0 12px 12px 0;padding:14px 16px;margin-bottom:16px}
+  .frame-label{font-size:.8rem;font-weight:700;color:var(--amber);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
+  .ladder-step{margin:10px 0}
+  .step-tag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:700;background:var(--amber);color:#fff;padding:3px 9px;border-radius:6px;margin-bottom:6px}
+  .frame-line{font-family:'JetBrains Mono',monospace;font-size:.92rem;line-height:2.1}
+  .fin{font-family:'JetBrains Mono',monospace;display:inline-block;width:130px;min-height:34px;padding:3px 8px;border:none;border-bottom:2px solid var(--amber);background:#fff;border-radius:5px 5px 0 0;font-size:.86rem;color:var(--amber);font-weight:700}
+  .fin.wide{width:180px}
+  .frame-line.mixed{font-family:'DM Sans',sans-serif;font-size:.92rem}
+  .frame-line.mixed .kw{font-family:'JetBrains Mono',monospace;font-weight:700}
+
+  /* BUILD YOUR TOUR */
+  .tour-box{background:var(--teal-soft);border:1.5px dashed var(--teal);border-radius:12px;padding:16px 18px;font-family:'JetBrains Mono',monospace;font-size:.95rem;line-height:2.4}
+  .tour-box .tin{font-family:'JetBrains Mono',monospace;display:inline-block;width:150px;min-height:34px;padding:3px 8px;border:none;border-bottom:2px solid var(--teal);background:#fff;border-radius:5px 5px 0 0;font-size:.86rem;color:var(--teal);font-weight:700}
+  .tour-box .tin.wide{width:200px}
+
+  /* HOMEWORK EXERCISES */
+  .ex-item{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--line);flex-wrap:wrap}
+  .ex-item:last-child{border-bottom:none}
+  .ex-num{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--navy);min-width:22px}
+  .ex-term{flex:1;min-width:120px;font-weight:500}
+  .ex-input.match-in{width:64px;text-transform:uppercase;text-align:center;font-family:'JetBrains Mono',monospace;font-weight:700;min-height:42px}
+  .ex-input.correct{border-color:var(--ok);background:#eafaf0}
+  .ex-input.wrong{border-color:var(--err);background:#fdeceb}
+  .ex-fb{font-size:.8rem;margin-left:6px;font-weight:700}
+  .ex-fb.no{color:var(--err)}
+  .sentence{font-size:.96rem}
+  .sentence .ex-input{display:inline-block;width:160px;margin:0 4px;min-height:38px;padding:6px 10px}
+  .wordbank{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 16px}
+  .wordbank span{font-family:'JetBrains Mono',monospace;font-size:.82rem;background:var(--navy-soft);color:var(--navy);padding:6px 11px;border-radius:8px;font-weight:500}
+  .match-cols{display:grid;grid-template-columns:1fr;gap:18px}
+  .match-opts{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 15px}
+  .match-opts h4{font-size:.82rem;color:var(--navy);margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px}
+  .match-opts div{padding:4px 0;font-size:.9rem}
+  .match-opts .mono{color:var(--amber);font-weight:700;margin-right:6px}
+  .btn-check{font-family:inherit;font-size:.9rem;font-weight:700;background:var(--navy);color:#fff;border:none;padding:12px 20px;border-radius:11px;cursor:pointer;margin-top:16px;min-height:46px}
+  .btn-check.green{background:var(--green)}
+  .btn-check:active{opacity:.85}
+  .score{margin-top:12px;font-weight:700;font-size:1rem;display:none}
+  .score.show{display:block}
+  .hw-tag{display:inline-block;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;padding:4px 10px;border-radius:999px;margin:18px 0 10px}
+  .hw-consolidar{background:var(--green-soft);color:var(--green)}
+  .hw-produzir{background:var(--navy-soft);color:var(--navy)}
+  .hw-preview{background:var(--teal-soft);color:var(--teal)}
+  .checklist{list-style:none;margin-top:8px}
+  .checklist li{display:flex;align-items:flex-start;gap:10px;padding:6px 0;font-size:.92rem}
+  .checklist input{width:20px;height:20px;margin-top:2px;accent-color:var(--navy);flex-shrink:0}
+  .record-tip{background:var(--navy-soft);border-radius:10px;padding:12px 14px;font-size:.9rem;color:var(--navy);margin-top:12px}
+  .preview-item{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--line)}
+  .preview-item:last-child{border-bottom:none}
+  .preview-en{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--teal);flex:1}
+  .preview-pt{color:var(--gray-600);font-size:.9rem}
+  .btn-mini{background:var(--teal);color:#fff;border:none;width:38px;height:38px;border-radius:9px;cursor:pointer;font-size:.9rem;flex-shrink:0}
+
+  /* NOTES */
+  .notes-box{margin-top:20px;border-top:1px dashed var(--line);padding-top:14px}
+  .notes-box label{font-size:.85rem;font-weight:700;color:var(--amber);display:flex;align-items:center;gap:6px;margin-bottom:6px}
+  .notes-box textarea{background:#fffdf7;border-color:var(--amber);border-style:dashed}
+
+  footer{text-align:center;padding:26px 16px;color:var(--gray-400);font-size:.8rem}
+  footer .mono{color:var(--green);font-weight:700}
+
+  @media(min-width:600px){
+    .lesson-title{font-size:2.3rem}
+    .match-cols{grid-template-columns:1fr 1fr}
+    .fc-word{font-size:2.4rem}
+    .sayit{grid-template-columns:1fr 1fr;gap:0 24px}
+  }
+  @media print{
+    header{position:static;box-shadow:none}
+    .toolbar,#saveDot,#deck .fc-nav,#deck .fc-dots,.voice-row,.btn-audio,.btn-spd,.btn-check,.btn-mini,.fc-tap,.fc-flip-hint{display:none!important}
+    #deck{display:none}
+    body{background:#fff}
+    .card{box-shadow:none;break-inside:avoid;border:1px solid #ddd}
+    input,textarea,select{border:1px solid #bbb!important}
+  }
+
+  /* --- fallback de espaçamento (navegadores sem flex gap, ex: Safari/iOS antigo) --- */
+  .ex-num{margin-right:8px}
+  .sayit li input[type=checkbox]{margin-right:8px}
+  .sort-row .mono{margin-right:10px}
+  .checklist input[type=checkbox]{margin-right:8px}
+  .btn-mini{margin-right:10px}
+  .audio-row > *{margin:0 6px 4px 0}
+  .voice-row > *{margin:0 6px 4px 0}
+  .toolbar > *{margin:3px 6px 3px 0}
+  .zone > *{margin-right:4px}
+  .week-badge{margin-left:8px}
+  .btn-spd{margin-right:2px}
+</style>
+</head>
+<body>
+
+<header>
+  <img class="header-logo" src="data:image/png;base64,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" alt="Talk it Easy — English for Agribusiness">
+  <div class="week-badge">AULA 1 · Slaughter, Defects &amp; Losses</div>
+</header>
+
+<main>
+  <h1 class="lesson-title">Slaughter, Defects &amp; Losses</h1>
+  <p class="lesson-sub">Programa de Inglês Técnico · Prevenção de Perdas no Abate &nbsp;|&nbsp; <span class="mono">Humberto Cunha · HC Foods</span></p>
+  <p class="lesson-intro">Seu caderno de trabalho. Você preenche a parte <b class="g">🟢 EM AULA</b> ao vivo com o professor e a parte <b class="n">🔵 HOMEWORK</b> depois. <b>Tudo o que você escrever fica salvo neste aparelho automaticamente.</b></p>
+
+  <div class="toolbar">
+    <div class="save-note">💾 Suas respostas são <b>salvas automaticamente</b> neste aparelho.</div>
+    <button class="tbtn" onclick="downloadResponses()">⬇️ Baixar respostas</button>
+    <button class="tbtn" onclick="window.print()">🖨️ Imprimir / PDF</button>
+    <button class="tbtn danger" onclick="clearAll()">🗑️ Limpar</button>
+  </div>
+
+  <!-- OUTCOMES -->
+  <section class="card card-green">
+    <div class="card-title">🎯 No fim desta aula você vai conseguir…</div>
+    <ul class="outcomes">
+      <li>Nomear os principais defeitos do abate em inglês (sangria, escaldagem, depenagem).</li>
+      <li>Ligar cada defeito à <b>perda</b> que ele causa.</li>
+      <li>Apontar a <b>causa provável</b> de um problema.</li>
+      <li>Falar do seu papel e <b>recomendar melhorias</b> para reduzir perdas.</li>
+    </ul>
+  </section>
+
+  <!-- WORD BANK -->
+  <section class="card card-green">
+    <div class="card-title">📚 Word Bank — 12 termos</div>
+    <p class="card-note">Sua referência. Ouça o termo, vire o card e ouça a frase em contexto real. Volte aqui sempre que precisar.</p>
+    <div class="fc-wrapper" id="deck">
+      <div class="voice-row"><span>🔊 Voz:</span><select id="voiceSel" class="nosave" onchange="pickVoice(this.value)"></select></div>
+      <div class="fc-card" id="fcCard" onclick="handleCardClick(event)">
+        <span class="fc-flip-hint" id="flipHint">toque para traduzir</span>
+        <div class="fc-face on" id="fcFront">
+          <div class="fc-step-label" id="fcStep">01 / 12</div>
+          <div class="fc-word" id="fcWord">slaughterhouse</div>
+          <div class="fc-ipa" id="fcIpa">/ˈslɔːtərhaʊs/</div>
+          <div class="audio-row">
+            <button class="btn-audio" id="btnWord" onclick="sayWord(event)">🔊 Ouvir termo</button>
+            <button class="btn-spd active" id="wSpd1" onclick="setSpd(event,1)">1×</button>
+            <button class="btn-spd" id="wSpd07" onclick="setSpd(event,0.7)">0.7×</button>
+          </div>
+          <div class="fc-tap">👆 Toque no card para ver tradução e uso real</div>
+        </div>
+        <div class="fc-face" id="fcBack">
+          <div class="fc-step-label">TRADUÇÃO E USO REAL</div>
+          <div class="fc-translation" id="fcTrans">abatedouro / matadouro</div>
+          <div class="audio-row">
+            <button class="btn-audio" id="btnEx" onclick="sayEx(event)">🔊 Ouvir frase</button>
+            <button class="btn-spd active" id="eSpd1" onclick="setExSpd(event,1)">1×</button>
+            <button class="btn-spd" id="eSpd07" onclick="setExSpd(event,0.7)">0.7×</button>
+          </div>
+          <div class="fc-example" id="fcEx">I've spent most of my career in slaughterhouses.</div>
+          <div class="fc-example-pt" id="fcPt">Passei a maior parte da carreira em abatedouros.</div>
+          <div class="fc-why" id="fcWhy"></div>
+        </div>
+      </div>
+      <div class="fc-nav">
+        <button class="fc-arrow" onclick="fcNav(-1)">‹</button>
+        <span class="fc-counter" id="fcCounter">1 de 12</span>
+        <button class="fc-arrow" onclick="fcNav(1)">›</button>
+      </div>
+      <div class="fc-dots" id="fcDots"></div>
+    </div>
+  </section>
+
+  <!-- ZONE: EM AULA -->
+  <div class="zone zone-class">🟢 EM AULA <small>— preencha ao vivo com o professor</small></div>
+
+  <!-- VOCAB PRACTICE -->
+  <section class="card card-green">
+    <div class="card-title">🧩 Vocabulary Practice — praticar os termos</div>
+
+    <div class="sub-h">1 · Say it</div>
+    <p class="card-note">Diga cada termo em voz alta dentro de uma frase. Marque à medida que fala.</p>
+    <ul class="sayit">
+      <li><input type="checkbox" id="say1"><span class="mono">slaughterhouse</span></li>
+      <li><input type="checkbox" id="say2"><span class="mono">slaughter</span></li>
+      <li><input type="checkbox" id="say3"><span class="mono">catching</span></li>
+      <li><input type="checkbox" id="say4"><span class="mono">bleeding</span></li>
+      <li><input type="checkbox" id="say5"><span class="mono">badly bled</span></li>
+      <li><input type="checkbox" id="say6"><span class="mono">excessive scalding</span></li>
+      <li><input type="checkbox" id="say7"><span class="mono">defeathering deficiency</span></li>
+      <li><input type="checkbox" id="say8"><span class="mono">bruise</span></li>
+      <li><input type="checkbox" id="say9"><span class="mono">injury</span></li>
+      <li><input type="checkbox" id="say10"><span class="mono">lesion</span></li>
+      <li><input type="checkbox" id="say11"><span class="mono">condemned</span></li>
+      <li><input type="checkbox" id="say12"><span class="mono">losses</span></li>
+    </ul>
+
+    <div class="sub-h">2 · Cause &amp; Effect</div>
+    <p class="card-note">Ligue cada problema à consequência (a perda que ele gera). Depois clique em checar.</p>
+    <div class="sort-row"><span class="mono">rough catching</span><select id="ce1" data-label="Cause&Effect · rough catching"><option value="">— consequência —</option><option value="bruises">bruises (hematomas)</option><option value="condemnation">condemnation (condenação)</option><option value="skin">skin damage (dano à pele)</option><option value="rework">rework — feathers remain (retrabalho)</option><option value="value">lower carcass value (menor valor)</option><option value="losses">financial losses (prejuízo)</option></select></div>
+    <div class="sort-row"><span class="mono">badly bled carcass</span><select id="ce2" data-label="Cause&Effect · badly bled"><option value="">— consequência —</option><option value="bruises">bruises (hematomas)</option><option value="condemnation">condemnation (condenação)</option><option value="skin">skin damage (dano à pele)</option><option value="rework">rework — feathers remain (retrabalho)</option><option value="value">lower carcass value (menor valor)</option><option value="losses">financial losses (prejuízo)</option></select></div>
+    <div class="sort-row"><span class="mono">excessive scalding</span><select id="ce3" data-label="Cause&Effect · excessive scalding"><option value="">— consequência —</option><option value="bruises">bruises (hematomas)</option><option value="condemnation">condemnation (condenação)</option><option value="skin">skin damage (dano à pele)</option><option value="rework">rework — feathers remain (retrabalho)</option><option value="value">lower carcass value (menor valor)</option><option value="losses">financial losses (prejuízo)</option></select></div>
+    <div class="sort-row"><span class="mono">defeathering deficiency</span><select id="ce4" data-label="Cause&Effect · defeathering deficiency"><option value="">— consequência —</option><option value="bruises">bruises (hematomas)</option><option value="condemnation">condemnation (condenação)</option><option value="skin">skin damage (dano à pele)</option><option value="rework">rework — feathers remain (retrabalho)</option><option value="value">lower carcass value (menor valor)</option><option value="losses">financial losses (prejuízo)</option></select></div>
+    <div class="sort-row"><span class="mono">bruises on the carcass</span><select id="ce5" data-label="Cause&Effect · bruises"><option value="">— consequência —</option><option value="bruises">bruises (hematomas)</option><option value="condemnation">condemnation (condenação)</option><option value="skin">skin damage (dano à pele)</option><option value="rework">rework — feathers remain (retrabalho)</option><option value="value">lower carcass value (menor valor)</option><option value="losses">financial losses (prejuízo)</option></select></div>
+    <div class="sort-row"><span class="mono">many condemned carcasses</span><select id="ce6" data-label="Cause&Effect · condemned"><option value="">— consequência —</option><option value="bruises">bruises (hematomas)</option><option value="condemnation">condemnation (condenação)</option><option value="skin">skin damage (dano à pele)</option><option value="rework">rework — feathers remain (retrabalho)</option><option value="value">lower carcass value (menor valor)</option><option value="losses">financial losses (prejuízo)</option></select></div>
+    <button class="btn-check green" onclick="checkCause()">✓ Checar Cause &amp; Effect</button>
+    <div class="score" id="scoreCause"></div>
+
+    <div class="sub-h">3 · Your words</div>
+    <p class="card-note">Escreva a sua própria frase, a partir das plantas que você atende, usando cada termo.</p>
+    <div class="yourword"><label>1. <span class="mono">catching</span></label><input type="text" id="yw1" data-label="Your words · catching" placeholder="Ex.: In many plants, rough catching causes bruises..."></div>
+    <div class="yourword"><label>2. <span class="mono">badly bled</span></label><input type="text" id="yw2" data-label="Your words · badly bled" placeholder="Sua frase..."></div>
+    <div class="yourword"><label>3. <span class="mono">bruise</span></label><input type="text" id="yw3" data-label="Your words · bruise" placeholder="Sua frase..."></div>
+    <div class="yourword"><label>4. <span class="mono">condemned</span></label><input type="text" id="yw4" data-label="Your words · condemned" placeholder="Sua frase..."></div>
+    <div class="yourword"><label>5. <span class="mono">losses</span></label><input type="text" id="yw5" data-label="Your words · losses" placeholder="Sua frase..."></div>
+
+    <div class="notes-box"><label>📝 Anotações &amp; sacadas</label><textarea id="notesVocab" data-label="Notas · Vocabulary Practice" placeholder="Anote o que o professor destacou..."></textarea></div>
+  </section>
+
+  <!-- SPEAKING FRAMES -->
+  <section class="card card-amber">
+    <div class="card-title">🗣️ Speaking Frames — organize sua fala</div>
+    <p class="card-note">Padrões prontos para falar de <b>defeito → perda</b>, <b>causa provável</b>, <b>seu papel</b> e <b>recomendação</b>. Cada um em 3 degraus: preencher → completar → sua vez.</p>
+
+    <!-- Frame 1 -->
+    <div class="frame-block">
+      <div class="frame-label">Frame 1 · Defeito → perda</div>
+      <div class="ladder-step"><span class="step-tag">1 · PREENCHER</span>
+        <div class="frame-line">When <input class="fin" id="f1a" data-label="F1 preencher · defeito"> is poor, we get <input class="fin wide" id="f1b" data-label="F1 preencher · efeito">, and that causes <input class="fin" id="f1c" data-label="F1 preencher · perda">.</div>
+      </div>
+      <div class="ladder-step"><span class="step-tag">2 · COMPLETAR</span>
+        <div class="frame-line mixed"><span class="kw">A badly bled carcass is often</span> <input class="fin" id="f1d" data-label="F1 completar">.</div>
+      </div>
+      <div class="ladder-step"><span class="step-tag">3 · SUA VEZ</span>
+        <textarea id="f1e" data-label="F1 sua vez · defeito e perda" placeholder="Escreva um defeito e a perda que ele causa..."></textarea>
+      </div>
+    </div>
+
+    <!-- Frame 2 -->
+    <div class="frame-block">
+      <div class="frame-label">Frame 2 · Problema → causa provável</div>
+      <div class="ladder-step"><span class="step-tag">1 · PREENCHER</span>
+        <div class="frame-line">The <input class="fin" id="f2a" data-label="F2 preencher · problema"> is probably caused by <input class="fin wide" id="f2b" data-label="F2 preencher · causa">.</div>
+      </div>
+      <div class="ladder-step"><span class="step-tag">2 · COMPLETAR</span>
+        <div class="frame-line mixed"><span class="kw">The probable cause of the bruising is</span> <input class="fin wide" id="f2c" data-label="F2 completar">.</div>
+      </div>
+      <div class="ladder-step"><span class="step-tag">3 · SUA VEZ</span>
+        <textarea id="f2d" data-label="F2 sua vez · problema e causa" placeholder="Aponte um problema e sua causa provável..."></textarea>
+      </div>
+    </div>
+
+    <!-- Frame 3 -->
+    <div class="frame-block">
+      <div class="frame-label">Frame 3 · Seu papel (consultor)</div>
+      <div class="ladder-step"><span class="step-tag">1 · PREENCHER</span>
+        <div class="frame-line">My role is to <input class="fin" id="f3a" data-label="F3 preencher · papel"> and to guide them on how to <input class="fin wide" id="f3b" data-label="F3 preencher · como">.</div>
+      </div>
+      <div class="ladder-step"><span class="step-tag">2 · COMPLETAR</span>
+        <div class="frame-line mixed"><span class="kw">I hire and train</span> <input class="fin wide" id="f3c" data-label="F3 completar">.</div>
+      </div>
+      <div class="ladder-step"><span class="step-tag">3 · SUA VEZ</span>
+        <textarea id="f3d" data-label="F3 sua vez · seu papel" placeholder="Descreva seu papel na planta (o que você faz para reduzir perdas)..."></textarea>
+      </div>
+    </div>
+
+    <!-- Frame 4 -->
+    <div class="frame-block">
+      <div class="frame-label">Frame 4 · Recomendar → resultado</div>
+      <div class="ladder-step"><span class="step-tag">1 · PREENCHER</span>
+        <div class="frame-line">I recommend <input class="fin wide" id="f4a" data-label="F4 preencher · recomendação">, so the plant can <input class="fin wide" id="f4b" data-label="F4 preencher · resultado">.</div>
+      </div>
+      <div class="ladder-step"><span class="step-tag">2 · COMPLETAR</span>
+        <div class="frame-line mixed"><span class="kw">I prepared a report, and the plant was able to</span> <input class="fin wide" id="f4c" data-label="F4 completar">.</div>
+      </div>
+      <div class="ladder-step"><span class="step-tag">3 · SUA VEZ</span>
+        <textarea id="f4d" data-label="F4 sua vez · recomendação" placeholder="Faça uma recomendação e o resultado esperado..."></textarea>
+      </div>
+    </div>
+
+    <div class="notes-box"><label>📝 Anotações &amp; sacadas</label><textarea id="notesFrames" data-label="Notas · Speaking Frames" placeholder="Correções e sacadas do professor..."></textarea></div>
+  </section>
+
+  <!-- BUILD YOUR FINDING -->
+  <section class="card card-teal">
+    <div class="card-title">🔎 Build Your Finding — sua recomendação de consultor</div>
+    <p class="card-note">Monte um "achado" completo, como numa consultoria: problema → causa → perda → recomendação → resultado. É o que você vai <b>falar</b> no fim da aula e <b>gravar</b> em casa.</p>
+    <div class="tour-box">
+      In this plant, I found a problem with <input class="tin wide" id="t1" data-label="Finding · problema">.
+      The probable cause is <input class="tin wide" id="t2" data-label="Finding · causa provável">.
+      This causes <input class="tin wide" id="t3" data-label="Finding · perda/consequência">.
+      I recommend <input class="tin wide" id="t4" data-label="Finding · recomendação">, so the plant can <input class="tin wide" id="t5" data-label="Finding · resultado">.
+      I prepared a report, and I'm confident they can implement <input class="tin wide" id="t6" data-label="Finding · a mudança">.
+    </div>
+    <div class="notes-box"><label>📝 Anotações &amp; sacadas</label><textarea id="notesFinding" data-label="Notas · Build Your Finding" placeholder="O que melhorar no seu achado..."></textarea></div>
+  </section>
+
+  <!-- ZONE: HOMEWORK -->
+  <div class="zone zone-home">🔵 HOMEWORK <small>— depois da aula</small></div>
+
+  <section class="card card-navy">
+    <div class="card-title">🏠 Homework — Lição de Casa</div>
+
+    <span class="hw-tag hw-consolidar">1 · Consolidar — faça hoje</span>
+
+    <div class="sub-h">Exercício A — Match</div>
+    <p class="card-note">Escreva a letra da tradução certa ao lado de cada termo.</p>
+    <div class="match-cols">
+      <div>
+        <div class="ex-item"><span class="ex-num">1</span><span class="ex-term mono">slaughterhouse</span><input class="ex-input match-in" id="m1" data-label="Match slaughterhouse" maxlength="1"></div>
+        <div class="ex-item"><span class="ex-num">2</span><span class="ex-term mono">slaughter</span><input class="ex-input match-in" id="m2" data-label="Match slaughter" maxlength="1"></div>
+        <div class="ex-item"><span class="ex-num">3</span><span class="ex-term mono">catching</span><input class="ex-input match-in" id="m3" data-label="Match catching" maxlength="1"></div>
+        <div class="ex-item"><span class="ex-num">4</span><span class="ex-term mono">bleeding</span><input class="ex-input match-in" id="m4" data-label="Match bleeding" maxlength="1"></div>
+        <div class="ex-item"><span class="ex-num">5</span><span class="ex-term mono">badly bled</span><input class="ex-input match-in" id="m5" data-label="Match badly bled" maxlength="1"></div>
+        <div class="ex-item"><span class="ex-num">6</span><span class="ex-term mono">excessive scalding</span><input class="ex-input match-in" id="m6" data-label="Match excessive scalding" maxlength="1"></div>
+        <div class="ex-item"><span class="ex-num">7</span><span class="ex-term mono">defeathering deficiency</span><input class="ex-input match-in" id="m7" data-label="Match defeathering deficiency" maxlength="1"></div>
+        <div class="ex-item"><span class="ex-num">8</span><span class="ex-term mono">bruise</span><input class="ex-input match-in" id="m8" data-label="Match bruise" maxlength="1"></div>
+        <div class="ex-item"><span class="ex-num">9</span><span class="ex-term mono">injury</span><input class="ex-input match-in" id="m9" data-label="Match injury" maxlength="1"></div>
+        <div class="ex-item"><span class="ex-num">10</span><span class="ex-term mono">lesion</span><input class="ex-input match-in" id="m10" data-label="Match lesion" maxlength="1"></div>
+        <div class="ex-item"><span class="ex-num">11</span><span class="ex-term mono">condemned</span><input class="ex-input match-in" id="m11" data-label="Match condemned" maxlength="1"></div>
+        <div class="ex-item"><span class="ex-num">12</span><span class="ex-term mono">losses</span><input class="ex-input match-in" id="m12" data-label="Match losses" maxlength="1"></div>
+      </div>
+      <div class="match-opts">
+        <h4>Traduções</h4>
+        <div><span class="mono">A.</span>escaldagem excessiva</div>
+        <div><span class="mono">B.</span>abate</div>
+        <div><span class="mono">C.</span>perdas / prejuízos</div>
+        <div><span class="mono">D.</span>mal sangrado</div>
+        <div><span class="mono">E.</span>apanha (das aves)</div>
+        <div><span class="mono">F.</span>lesão (patológica)</div>
+        <div><span class="mono">G.</span>abatedouro / matadouro</div>
+        <div><span class="mono">H.</span>hematoma / contusão</div>
+        <div><span class="mono">I.</span>sangria</div>
+        <div><span class="mono">J.</span>condenado (reprovado)</div>
+        <div><span class="mono">K.</span>falha na depenagem</div>
+        <div><span class="mono">L.</span>ferimento (trauma)</div>
+      </div>
+    </div>
+    <button class="btn-check" onclick="checkMatch()">✓ Checar Match</button>
+    <div class="score" id="scoreMatch"></div>
+
+    <div class="sub-h">Exercício B — Complete the sentence</div>
+    <p class="card-note">Complete com a palavra certa do banco.</p>
+    <div class="wordbank"><span>bleeding</span><span>catching</span><span>condemned</span><span>defeathering</span><span>excessive</span><span>lesions</span><span>losses</span><span>slaughterhouse</span></div>
+    <div class="sentence ex-item"><span class="ex-num">1</span><span>Rough <input class="ex-input" id="c1" data-label="Complete 1"> in the field causes bruises.</span></div>
+    <div class="sentence ex-item"><span class="ex-num">2</span><span>A badly bled carcass is often <input class="ex-input" id="c2" data-label="Complete 2">.</span></div>
+    <div class="sentence ex-item"><span class="ex-num">3</span><span><input class="ex-input" id="c3" data-label="Complete 3"> scalding damages the skin.</span></div>
+    <div class="sentence ex-item"><span class="ex-num">4</span><span>Poor <input class="ex-input" id="c4" data-label="Complete 4"> leaves feathers on the carcass.</span></div>
+    <div class="sentence ex-item"><span class="ex-num">5</span><span>These problems cause financial <input class="ex-input" id="c5" data-label="Complete 5">.</span></div>
+    <div class="sentence ex-item"><span class="ex-num">6</span><span>The inspector looks for <input class="ex-input" id="c6" data-label="Complete 6"> on each carcass.</span></div>
+    <div class="sentence ex-item"><span class="ex-num">7</span><span>Complete <input class="ex-input" id="c7" data-label="Complete 7"> avoids condemnation.</span></div>
+    <div class="sentence ex-item"><span class="ex-num">8</span><span>I've spent most of my career in a <input class="ex-input" id="c8" data-label="Complete 8">.</span></div>
+    <button class="btn-check" onclick="checkComplete()">✓ Checar Complete</button>
+    <div class="score" id="scoreComplete"></div>
+
+    <span class="hw-tag hw-produzir">2 · Produzir — antes da próxima aula</span>
+    <p style="font-size:.96rem;margin-bottom:6px"><b>Grave um áudio de 60–90 segundos</b> com o seu <b>Build Your Finding</b>: um problema → causa → perda → recomendação → resultado. De cabeça, sem ler.</p>
+    <div class="record-tip">🎙️ É exatamente o que você fará numa consultoria: apontar o problema, a causa provável e recomendar a melhoria para reduzir perdas.</div>
+    <p style="font-size:.85rem;color:var(--gray-600);margin:14px 0 4px">Checklist antes de enviar:</p>
+    <ul class="checklist">
+      <li><input type="checkbox" id="hw1">Nomeei o problema/defeito</li>
+      <li><input type="checkbox" id="hw2">Dei a <span class="mono">probable cause</span></li>
+      <li><input type="checkbox" id="hw3">Liguei à perda (<span class="mono">losses / condemnation</span>)</li>
+      <li><input type="checkbox" id="hw4">Fiz uma recomendação + resultado esperado</li>
+    </ul>
+
+    <span class="hw-tag hw-preview">3 · Preview — 5 min antes da próxima aula</span>
+    <p class="card-note">Espie estes 5 termos da Aula 2 (recepção e pré-abate / bem-estar animal). Não precisa decorar.</p>
+    <div id="previewList"></div>
+
+    <div class="notes-box"><label>📝 Anotações &amp; sacadas</label><textarea id="notesHw" data-label="Notas · Homework" placeholder="Dúvidas para levar à próxima aula..."></textarea></div>
+  </section>
+
+  <footer>
+    <span class="mono">Talk Agribusiness</span> &nbsp;|&nbsp; Aula 1 de 8 · Slaughter, Defects &amp; Losses
+  </footer>
+</main>
+<div id="saveDot">✓ salvo</div>
+
+<script>
+/* ============ DATA ============ */
+const CARDS = [
+  {step:'01 / 12', word:'slaughterhouse', ipa:'/ˈslɔːtərhaʊs/', trans:'abatedouro / matadouro', ex:"I've spent most of my career in slaughterhouses.", pt:'Passei a maior parte da carreira em abatedouros.', why:'Com cliente internacional, "processing plant" soa mais profissional; "slaughterhouse" é o termo cru.'},
+  {step:'02 / 12', word:'slaughter', ipa:'/ˈslɔːtər/', trans:'abate', ex:'Slaughter is the act of killing poultry for food.', pt:'Abate é o ato de matar aves para alimentação.', why:'Definição regulatória (USDA); serve de substantivo e verbo.'},
+  {step:'03 / 12', word:'catching', ipa:'/ˈkætʃɪŋ/', trans:'apanha (das aves na granja)', ex:'Rough catching causes bruises before slaughter.', pt:'A apanha bruta causa hematomas antes do abate.', why:'Muitas perdas começam no campo, não na linha.'},
+  {step:'04 / 12', word:'bleeding', ipa:'/ˈbliːdɪŋ/', trans:'sangria', ex:'Complete bleeding avoids condemnation.', pt:'Uma sangria completa evita condenação.', why:'Sangria deficiente → carcaça condenada → perda direta.'},
+  {step:'05 / 12', word:'badly bled', ipa:'/ˈbædli bled/', trans:'mal sangrado', ex:'A badly bled carcass is often condemned.', pt:'Uma carcaça mal sangrada costuma ser condenada.', why:'Defeito clássico que vira perda direta.'},
+  {step:'06 / 12', word:'excessive scalding', ipa:'/ɪkˈsesɪv ˈskɔːldɪŋ/', trans:'escaldagem excessiva', ex:'Excessive scalding damages the skin.', pt:'A escaldagem excessiva danifica a pele.', why:'Tempo/temperatura errados → dano → downgrade do produto.'},
+  {step:'07 / 12', word:'defeathering deficiency', ipa:'/diːˈfeðərɪŋ dɪˈfɪʃənsi/', trans:'falha na depenagem', ex:'Defeathering deficiency leaves feathers on the carcass.', pt:'A falha na depenagem deixa penas na carcaça.', why:'Gera retrabalho e reprovação; na indústria: "poor defeathering".'},
+  {step:'08 / 12', word:'bruise', ipa:'/bruːz/', trans:'hematoma / contusão', ex:'Bruises lower the value of the carcass.', pt:'Hematomas reduzem o valor da carcaça.', why:'Sangue sob a pele; origem no manejo/apanha.'},
+  {step:'09 / 12', word:'injury', ipa:'/ˈɪndʒəri/', trans:'ferimento / lesão (trauma)', ex:'An injury during handling can downgrade the product.', pt:'Um ferimento no manejo pode rebaixar o produto.', why:'Trauma físico geral — diferente de "lesion" (patológica).'},
+  {step:'10 / 12', word:'lesion', ipa:'/ˈliːʒən/', trans:'lesão (patológica)', ex:'The inspector looks for lesions on each carcass.', pt:'O inspetor procura lesões em cada carcaça.', why:'Alteração de tecido (trauma OU doença) — o termo mais amplo.'},
+  {step:'11 / 12', word:'condemned', ipa:'/kənˈdemd/', trans:'condenado (reprovado na inspeção)', ex:'Condemned carcasses are a direct loss.', pt:'Carcaças condenadas são perda direta.', why:'O resultado que você quer reduzir.'},
+  {step:'12 / 12', word:'losses', ipa:'/ˈlɒsɪz/', trans:'perdas / prejuízos', ex:'These problems cause financial losses.', pt:'Esses problemas causam prejuízos financeiros.', why:'A sua frase-síntese — o eixo do curso.'}
+];
+const PREVIEW = [
+  {en:'unloading', pt:'descarregamento (das aves)'},
+  {en:'hanging / shackling', pt:'pendura'},
+  {en:'stunning', pt:'atordoamento / insensibilização'},
+  {en:'animal welfare', pt:'bem-estar animal'},
+  {en:'DOA (dead on arrival)', pt:'morta na chegada'}
+];
+const ANS_MATCH = {m1:'G',m2:'B',m3:'E',m4:'I',m5:'D',m6:'A',m7:'K',m8:'H',m9:'L',m10:'F',m11:'J',m12:'C'};
+const ANS_COMPLETE = {c1:'catching',c2:'condemned',c3:'excessive',c4:'defeathering',c5:'losses',c6:'lesions',c7:'bleeding',c8:'slaughterhouse'};
+const ANS_CE = {ce1:'bruises',ce2:'condemnation',ce3:'skin',ce4:'rework',ce5:'value',ce6:'losses'};
+
+/* ============ PERSISTENCE ============ */
+const PKEY='talkagri_a1sdl_';
+function pEls(){return [...document.querySelectorAll('input[id],textarea[id],select[id]')].filter(e=>!e.classList.contains('nosave'));}
+let dotT;
+function flashSaved(){const d=document.getElementById('saveDot');d.classList.add('on');clearTimeout(dotT);dotT=setTimeout(()=>d.classList.remove('on'),900);}
+function saveEl(el){const k=PKEY+el.id;if(el.type==='checkbox')localStorage.setItem(k,el.checked?'1':'0');else localStorage.setItem(k,el.value);flashSaved();}
+function restoreAll(){pEls().forEach(el=>{const v=localStorage.getItem(PKEY+el.id);if(v===null)return;if(el.type==='checkbox')el.checked=(v==='1');else el.value=v;});}
+document.addEventListener('input',e=>{if(e.target.id&&!e.target.classList.contains('nosave'))saveEl(e.target);});
+document.addEventListener('change',e=>{if(e.target.id&&!e.target.classList.contains('nosave'))saveEl(e.target);});
+function clearAll(){if(!confirm('Apagar TODAS as suas respostas salvas deste aparelho? Não dá pra desfazer.'))return;Object.keys(localStorage).filter(k=>k.startsWith(PKEY)).forEach(k=>localStorage.removeItem(k));location.reload();}
+function downloadResponses(){
+  const CE={bruises:'bruises',condemnation:'condemnation',skin:'skin damage',rework:'rework (feathers remain)',value:'lower carcass value',losses:'financial losses'};
+  let out=['TALK AGRIBUSINESS — Aula 1 · Slaughter, Defects & Losses','Humberto Cunha · HC Foods','='.repeat(52),''];
+  pEls().forEach(el=>{const lab=el.getAttribute('data-label');if(!lab)return;let val;if(el.type==='checkbox')val=el.checked?'[x]':'[ ]';else if(el.tagName==='SELECT')val=CE[el.value]||'—';else val=el.value.trim()||'—';out.push(lab+': '+val);});
+  out.push('','Gerado em '+new Date().toLocaleString('pt-BR'));
+  const blob=new Blob([out.join('\n')],{type:'text/plain;charset=utf-8'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='Aula1_Humberto_respostas.txt';a.click();URL.revokeObjectURL(a.href);
+}
+
+/* ============ FLASHCARD ============ */
+const FC={idx:0,spd:1,exSpd:1,voice:null,flipped:false};
+const VOICE_PREF=['Google US English','Samantha','Karen','Google UK English Female','Microsoft Aria'];
+function loadVoices(){if(!window.speechSynthesis)return;let voices=window.speechSynthesis.getVoices().filter(v=>/en(-|_)/i.test(v.lang)||/english/i.test(v.name));if(!voices.length)return;voices.sort((a,b)=>{const ia=VOICE_PREF.findIndex(p=>a.name.includes(p)),ib=VOICE_PREF.findIndex(p=>b.name.includes(p));return (ia<0?99:ia)-(ib<0?99:ib);});const sel=document.getElementById('voiceSel');sel.innerHTML='';voices.slice(0,4).forEach((v,i)=>{const o=document.createElement('option');o.value=v.name;o.textContent=v.name.replace('Google ','').replace(' Online (Natural)','');sel.appendChild(o);if(i===0&&!FC.voice)FC.voice=v;});if(FC.voice)sel.value=FC.voice.name;}
+function pickVoice(n){const v=window.speechSynthesis.getVoices().find(x=>x.name===n);if(v)FC.voice=v;}
+function stopAll(){if(window.speechSynthesis)window.speechSynthesis.cancel();document.querySelectorAll('.btn-audio.playing').forEach(b=>b.classList.remove('playing'));}
+function speak(text,rate,btn){if(!window.speechSynthesis)return;stopAll();const u=new SpeechSynthesisUtterance(text);u.lang='en-US';u.rate=rate||1;if(FC.voice)u.voice=FC.voice;if(btn){btn.classList.add('playing');u.onend=()=>btn.classList.remove('playing');}window.speechSynthesis.speak(u);}
+function sayWord(e){if(e)e.stopPropagation();speak(CARDS[FC.idx].word,FC.spd,document.getElementById('btnWord'));}
+function sayEx(e){if(e)e.stopPropagation();speak(CARDS[FC.idx].ex,FC.exSpd,document.getElementById('btnEx'));}
+function setSpd(e,s){e.stopPropagation();FC.spd=s;document.getElementById('wSpd1').classList.toggle('active',s===1);document.getElementById('wSpd07').classList.toggle('active',s===0.7);sayWord(e);}
+function setExSpd(e,s){e.stopPropagation();FC.exSpd=s;document.getElementById('eSpd1').classList.toggle('active',s===1);document.getElementById('eSpd07').classList.toggle('active',s===0.7);sayEx(e);}
+function render(){const c=CARDS[FC.idx];fcSet('fcStep',c.step);fcSet('fcWord',c.word);fcSet('fcIpa',c.ipa);fcSet('fcTrans',c.trans);fcSet('fcEx',c.ex);fcSet('fcPt',c.pt);document.getElementById('fcWhy').innerHTML='<b>Por que importa:</b> '+c.why;fcSet('fcCounter',(FC.idx+1)+' de 12');FC.flipped=false;showFace();updateDots();}
+function fcSet(id,t){document.getElementById(id).textContent=t;}
+function showFace(){document.getElementById('fcFront').classList.toggle('on',!FC.flipped);document.getElementById('fcBack').classList.toggle('on',FC.flipped);document.getElementById('flipHint').textContent=FC.flipped?'toque para voltar':'toque para traduzir';}
+function handleCardClick(e){if(e.target.closest('.btn-audio')||e.target.closest('.btn-spd'))return;stopAll();FC.flipped=!FC.flipped;showFace();}
+function buildDots(){const d=document.getElementById('fcDots');d.innerHTML='';CARDS.forEach((_,i)=>{const dot=document.createElement('div');dot.className='fc-dot';dot.onclick=()=>{stopAll();FC.idx=i;render();};d.appendChild(dot);});}
+function updateDots(){document.querySelectorAll('.fc-dot').forEach((dot,i)=>{dot.classList.toggle('active',i===FC.idx);dot.classList.toggle('visited',i<FC.idx);});}
+function fcNav(dir){stopAll();FC.idx=(FC.idx+dir+CARDS.length)%CARDS.length;render();}
+
+/* ============ PREVIEW ============ */
+function buildPreview(){const box=document.getElementById('previewList');PREVIEW.forEach(p=>{const row=document.createElement('div');row.className='preview-item';row.innerHTML='<button class="btn-mini">🔊</button><span class="preview-en">'+p.en+'</span><span class="preview-pt">'+p.pt+'</span>';row.querySelector('button').onclick=()=>speak(p.en.split(' / ')[0].split(' (')[0],1,null);box.appendChild(row);});}
+
+/* ============ CHECKERS ============ */
+function norm(s){return (s||'').trim().toLowerCase().replace(/\.$/,'');}
+function checkMatch(){let ok=0;for(const id in ANS_MATCH){const el=document.getElementById(id);const val=(el.value||'').trim().toUpperCase();el.classList.remove('correct','wrong');let fb=el.parentNode.querySelector('.ex-fb');if(fb)fb.remove();if(val===ANS_MATCH[id]){el.classList.add('correct');ok++;}else{el.classList.add('wrong');const s=document.createElement('span');s.className='ex-fb no';s.textContent='→ '+ANS_MATCH[id];el.parentNode.appendChild(s);}}showScore('scoreMatch',ok,12);}
+function checkComplete(){let ok=0;for(const id in ANS_COMPLETE){const el=document.getElementById(id);el.classList.remove('correct','wrong');let fb=el.parentNode.querySelector('.ex-fb');if(fb)fb.remove();if(norm(el.value)===ANS_COMPLETE[id]){el.classList.add('correct');ok++;}else{el.classList.add('wrong');const s=document.createElement('span');s.className='ex-fb no';s.textContent='→ '+ANS_COMPLETE[id];el.parentNode.appendChild(s);}}showScore('scoreComplete',ok,8);}
+function checkCause(){let ok=0;for(const id in ANS_CE){const el=document.getElementById(id);el.classList.remove('correct','wrong');if(el.value===ANS_CE[id]){el.classList.add('correct');ok++;}else if(el.value!==''){el.classList.add('wrong');}}showScore('scoreCause',ok,6);}
+function showScore(id,ok,total){const el=document.getElementById(id);el.classList.add('show');const pct=ok/total;let emo='💪';if(pct===1)emo='🏆';else if(pct>=.7)emo='🔥';else if(pct>=.4)emo='👍';el.style.color=pct>=.7?'var(--ok)':(pct>=.4?'var(--amber)':'var(--err)');el.textContent=emo+'  '+ok+' / '+total+(pct===1?'  Perfeito!':'  — revise e tente de novo.');}
+
+/* ============ INIT ============ */
+buildDots();render();buildPreview();restoreAll();
+if(window.speechSynthesis){if(speechSynthesis.onvoiceschanged!==undefined)speechSynthesis.onvoiceschanged=loadVoices;loadVoices();setTimeout(loadVoices,300);}
+</script>
+</body>
+</html>
